@@ -24,7 +24,7 @@ void AppClass::Update(void)
 
 	//Update the mesh manager's time without updating for collision detection
 	m_pMeshMngr->Update();
-#pragma region
+#pragma endregion
 
 #pragma region Does not need changes but feel free to change anything here
 	//Lets us know how much time has passed since the last call
@@ -36,7 +36,26 @@ void AppClass::Update(void)
 #pragma endregion
 
 #pragma region Your Code goes here
-	m_pMeshMngr->SetModelMatrix(IDENTITY_M4, "WallEye");
+	vector3 lerpPoints[] = {
+		vector3(-4.0f,-2.0f, 5.0f),
+		vector3(1.0f,-2.0f, 5.0f),
+		vector3(-3.0f,-1.0f, 3.0f),
+		vector3(2.0f,-1.0f, 3.0f),
+		vector3(-2.0f, 0.0f, 0.0f),
+		vector3(3.0f, 0.0f, 0.0f),
+		vector3(-1.0f, 1.0f,-3.0f),
+		vector3(4.0f, 1.0f,-3.0f),
+		vector3(0.0f, 2.0f,-5.0f),
+		vector3(5.0f, 2.0f,-5.0f),
+		vector3(1.0f, 3.0f,-5.0f)
+	};
+	for (auto& point: lerpPoints) m_pMeshMngr->AddSphereToQueue(glm::scale(glm::translate(point), vector3(0.1f, 0.1f, 0.1f)), RERED);
+	float pointsPassed = fRunTime / fDuration;
+	int previousPoint = ((int)(pointsPassed) % 11);
+	float percent = fmod(pointsPassed, 1.0f);
+	matrix4 location = glm::translate(glm::lerp(lerpPoints[previousPoint], lerpPoints[(previousPoint+ 1) % 11], percent));
+	m_pMeshMngr->SetModelMatrix(location, "WallEye");
+	
 #pragma endregion
 
 #pragma region Does not need changes but feel free to change anything here

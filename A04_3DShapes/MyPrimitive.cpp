@@ -114,12 +114,29 @@ void MyPrimitive::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivis
 	//3--2
 	//|  |
 	//0--1
+	/*
 	vector3 point0(-fValue, -fValue, fValue); //0
 	vector3 point1(fValue, -fValue, fValue); //1
 	vector3 point2(fValue, fValue, fValue); //2
 	vector3 point3(-fValue, fValue, fValue); //3
 
 	AddQuad(point0, point1, point3, point2);
+	*/
+
+	for (int i = 0; i < a_nSubdivisions; ++i)
+	{
+		vector3 point0(0, a_fHeight / 2, 0);
+
+		vector3 point4(a_fRadius*cos((i * 2 * PI) / a_nSubdivisions), -a_fHeight / 2, a_fRadius*sin((i * 2 * PI) / a_nSubdivisions));
+		vector3 point5(a_fRadius*cos(((i + 1) * 2 * PI) / a_nSubdivisions), -a_fHeight / 2, a_fRadius*sin(((i + 1) * 2 * PI) / a_nSubdivisions));
+		vector3 point6(0, -a_fHeight / 2, 0);
+		vector3 point7(a_fRadius*cos((i * 2 * PI) / a_nSubdivisions), -a_fHeight / 2, a_fRadius*sin((i * 2 * PI) / a_nSubdivisions));
+
+		AddQuad(point7, point6, point5, point4);
+
+		AddQuad(point4, point5, point0, point4);
+	}
+
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -139,12 +156,34 @@ void MyPrimitive::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubd
 	//3--2
 	//|  |
 	//0--1
+	/*
 	vector3 point0(-fValue, -fValue, fValue); //0
 	vector3 point1(fValue, -fValue, fValue); //1
 	vector3 point2(fValue, fValue, fValue); //2
 	vector3 point3(-fValue, fValue, fValue); //3
 
 	AddQuad(point0, point1, point3, point2);
+	*/
+
+	for (int i = 0; i < a_nSubdivisions; ++i)
+	{
+		vector3 point0(a_fRadius*cos((i * 2 * PI) / a_nSubdivisions), a_fHeight / 2, a_fRadius*sin((i * 2 * PI) / a_nSubdivisions));
+		vector3 point1(a_fRadius*cos(((i + 1) * 2 * PI) / a_nSubdivisions), a_fHeight / 2, a_fRadius*sin(((i + 1) * 2 * PI) / a_nSubdivisions));
+		vector3 point2(0, a_fHeight / 2, 0);
+		vector3 point3(a_fRadius*cos((i * 2 * PI) / a_nSubdivisions), a_fHeight / 2, a_fRadius*sin((i * 2 * PI) / a_nSubdivisions));
+
+		AddQuad(point3, point2, point1, point0);
+
+		vector3 point4(a_fRadius*cos((i * 2 * PI) / a_nSubdivisions), -a_fHeight / 2, a_fRadius*sin((i * 2 * PI) / a_nSubdivisions));
+		vector3 point5(a_fRadius*cos(((i + 1) * 2 * PI) / a_nSubdivisions), -a_fHeight / 2, a_fRadius*sin(((i + 1) * 2 * PI) / a_nSubdivisions));
+		vector3 point6(0, -a_fHeight / 2, 0);
+		vector3 point7(a_fRadius*cos((i * 2 * PI) / a_nSubdivisions), -a_fHeight / 2, a_fRadius*sin((i * 2 * PI) / a_nSubdivisions));
+
+		AddQuad(point7, point6, point5, point4);
+
+		AddQuad(point5, point4, point1, point0);
+	}
+
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -164,12 +203,35 @@ void MyPrimitive::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float
 	//3--2
 	//|  |
 	//0--1
+	/*
 	vector3 point0(-fValue, -fValue, fValue); //0
 	vector3 point1(fValue, -fValue, fValue); //1
 	vector3 point2(fValue, fValue, fValue); //2
 	vector3 point3(-fValue, fValue, fValue); //3
 
 	AddQuad(point0, point1, point3, point2);
+	*/
+
+	for (int i = 0; i < a_nSubdivisions; ++i)
+	{
+		vector3 point0(a_fOuterRadius*cos((i * 2 * PI) / a_nSubdivisions), a_fHeight / 2, a_fOuterRadius*sin((i * 2 * PI) / a_nSubdivisions));
+		vector3 point1(a_fOuterRadius*cos(((i + 1) * 2 * PI) / a_nSubdivisions), a_fHeight / 2, a_fOuterRadius*sin(((i + 1) * 2 * PI) / a_nSubdivisions));
+		vector3 point2(a_fInnerRadius*cos((i * 2 * PI) / a_nSubdivisions), a_fHeight / 2, a_fInnerRadius*sin((i * 2 * PI) / a_nSubdivisions));
+		vector3 point3(a_fInnerRadius*cos(((i + 1) * 2 * PI) / a_nSubdivisions), a_fHeight / 2, a_fInnerRadius*sin(((i + 1) * 2 * PI) / a_nSubdivisions));
+
+		AddQuad(point3, point1, point2, point0);
+
+		vector3 point4(a_fOuterRadius*cos((i * 2 * PI) / a_nSubdivisions), -a_fHeight / 2, a_fOuterRadius*sin((i * 2 * PI) / a_nSubdivisions));
+		vector3 point5(a_fOuterRadius*cos(((i + 1) * 2 * PI) / a_nSubdivisions), -a_fHeight / 2, a_fOuterRadius*sin(((i + 1) * 2 * PI) / a_nSubdivisions));
+		vector3 point6(a_fInnerRadius*cos((i * 2 * PI) / a_nSubdivisions), -a_fHeight / 2, a_fInnerRadius*sin((i * 2 * PI) / a_nSubdivisions));
+		vector3 point7(a_fInnerRadius*cos(((i + 1) * 2 * PI) / a_nSubdivisions), -a_fHeight / 2, a_fInnerRadius*sin(((i + 1) * 2 * PI) / a_nSubdivisions));
+
+		AddQuad(point4, point5, point6, point7);
+
+		AddQuad(point5, point4, point1, point0);
+		AddQuad(point6, point7, point2, point3);
+	}
+
 
 	//Your code ends here
 	CompileObject(a_v3Color);
@@ -215,13 +277,14 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 		GenerateCube(a_fRadius * 2, a_v3Color);
 		return;
 	}
-	if (a_nSubdivisions > 6)
-		a_nSubdivisions = 6;
+	if (a_nSubdivisions > 20)
+		a_nSubdivisions = 20;
 
 	Release();
 	Init();
 
 	//Your code starts here
+	/*
 	float fValue = 0.5f;
 	//3--2
 	//|  |
@@ -232,6 +295,20 @@ void MyPrimitive::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a
 	vector3 point3(-fValue, fValue, fValue); //3
 
 	AddQuad(point0, point1, point3, point2);
+	*/
+
+	for (int i = 0; i < a_nSubdivisions; ++i)
+	{
+		for (int j = 0; j < a_nSubdivisions; ++j)
+		{
+			vector3 point0(sin((j*PI) / a_nSubdivisions)*a_fRadius*cos((i * 2 * PI) / a_nSubdivisions), a_fRadius * cos((j*PI)/ a_nSubdivisions), sin((j*PI) / a_nSubdivisions)*a_fRadius*sin((i * 2 * PI) / a_nSubdivisions));
+			vector3 point1(sin((j*PI) / a_nSubdivisions)*a_fRadius*cos(((i + 1)* 2 * PI) / a_nSubdivisions), a_fRadius * cos((j*PI) / a_nSubdivisions), sin((j*PI) / a_nSubdivisions)*a_fRadius*sin(((i + 1) * 2 * PI) / a_nSubdivisions));
+			vector3 point2(sin(((j + 1)*PI) / a_nSubdivisions)*a_fRadius*cos((i * 2 * PI) / a_nSubdivisions), a_fRadius * cos(((j + 1)*PI) / a_nSubdivisions), sin(((j + 1)*PI) / a_nSubdivisions)*a_fRadius*sin((i * 2 * PI) / a_nSubdivisions));
+			vector3 point3(sin(((j + 1)*PI) / a_nSubdivisions)*a_fRadius*cos(((i + 1) * 2 * PI) / a_nSubdivisions), a_fRadius * cos(((j + 1)*PI) / a_nSubdivisions), sin(((j + 1)*PI) / a_nSubdivisions)*a_fRadius*sin(((i + 1) * 2 * PI) / a_nSubdivisions));
+
+			AddQuad(point0, point1, point2, point3);
+		}
+	}
 
 	//Your code ends here
 	CompileObject(a_v3Color);

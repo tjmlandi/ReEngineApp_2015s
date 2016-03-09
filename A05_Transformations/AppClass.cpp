@@ -52,8 +52,28 @@ void AppClass::Update(void)
 	//Calculate the position of the Earth
 	m_m4Earth = glm::rotate(IDENTITY_M4, m_fEarthTimer, vector3(0.0f, 1.0f, 0.0f));
 
+	m_m4Earth = glm::rotate(m_m4Earth, 90.0f, vector3(1.0f, 0, 0));
+
+	m_m4Earth = glm::translate(m_m4Earth, vector3(11.0f, 0.0f, 0.0f));
+
+	m_m4Earth = glm::rotate(m_m4Earth, m_fEarthTimer * 365, vector3(0, 0, 1.0f));
+
 	//Calculate the position of the Moon
-	m_m4Moon = glm::rotate(IDENTITY_M4, m_fMoonTimer, vector3(0.0f, 1.0f, 0.0f));
+	m_m4Moon = glm::rotate(IDENTITY_M4, m_fEarthTimer, vector3(0.0f, 1.0f, 0.0f));
+
+	m_m4Moon = glm::rotate(m_m4Moon, 90.0f, vector3(1.0f, 0, 0));
+
+	m_m4Moon = glm::translate(m_m4Moon, vector3(11.0f, 0.0f, 0.0f));
+
+	m_m4Moon = glm::rotate(m_m4Moon, m_fMoonTimer, vector3(0.0f, 0.0f, 1.0f));
+
+	m_m4Moon = glm::translate(m_m4Moon, vector3(0.0f, 2.0f, 0));
+
+	m_m4Moon = glm::rotate(m_m4Moon, m_fMoonTimer / 365, vector3(0.0f, 0.0f, 1.0f));
+
+
+
+
 #pragma endregion
 
 #pragma region Print info
