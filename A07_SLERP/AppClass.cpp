@@ -48,16 +48,67 @@ void AppClass::Update(void)
 	float fMoonHalfOrbTime = 14.0f * m_fDay; //Moon's orbit is 28 earth days, so half the time for half a route
 
 	//Setting the matrices
-	m_pMeshMngr->SetModelMatrix(IDENTITY_M4, "Sun");
-	m_pMeshMngr->SetModelMatrix(IDENTITY_M4, "Earth");
-	m_pMeshMngr->SetModelMatrix(IDENTITY_M4, "Moon");
+
+	glm::quat first = glm::quat(vector3(0.0f, 0.0f, 0.0f));
+	glm::quat second = glm::quat(vector3(0.0f, PI, 0.0f));
+
+	float earthOrbPercentage = fmod(fRunTime, fEarthHalfOrbTime * 2) / fEarthHalfOrbTime;
+
+	glm::quat rotation = glm::mix(first, second, earthOrbPercentage);
+	matrix4 earthPos = IDENTITY_M4 * glm::mat4_cast(rotation);
+
+	earthPos = glm::translate(earthPos, vector3(11.0f, 0.0f, 0.0f));
+	earthPos = glm::scale(earthPos, vector3(0.524f, 0.524f, 0.524f));
+
+	matrix4 moonPos = matrix4(earthPos);
+	
+	glm::quat moonOrbFirst = glm::quat(vector3(0.0f, 0.0f, 0.0f));
+	glm::quat moonOrbSecond = glm::quat(vector3(0.0f, PI, 0.0f));
+
+	float moonOrbPercentage = fmod(fRunTime, fMoonHalfOrbTime * 2) / fMoonHalfOrbTime;
+
+	glm::quat mOrbit = glm::mix(moonOrbFirst, moonOrbSecond, moonOrbPercentage);
+	moonPos *= glm::mat4_cast(mOrbit);
+
+	moonOrbPercentage = fmod(fRunTime, fEarthHalfOrbTime * 2) / fEarthHalfOrbTime;
+
+	mOrbit = glm::mix(moonOrbSecond, moonOrbFirst, moonOrbPercentage);
+	moonPos *= glm::mat4_cast(mOrbit);
+
+
+
+	moonPos = glm::translate(moonPos, vector3(2.0f, 0.0f, 0.0f));
+
+	glm::quat mRevFirst = glm::quat(vector3(0.0f, 0.0f, 0.0f));
+	glm::quat mRevSecond = glm::quat(vector3(0.0f, PI, 0.0f));
+	float moonRevPercentage = fmod(fRunTime / 365, fMoonHalfOrbTime * 2) / fMoonHalfOrbTime;
+	glm::quat mRevolution = glm::mix(mRevFirst, mRevSecond, moonRevPercentage);
+
+	moonPos *= glm::mat4_cast(mRevolution);
+
+	moonPos = glm::scale(moonPos, vector3(0.27f, 0.27f, 0.27f));
+
+	glm::quat eRevFirst = glm::quat(vector3(0.0f, 0.0f, 0.0f));
+	glm::quat eRevSecond = glm::quat(vector3(0.0f, PI, 0.0f));
+	float earthRevPercentage = fmod(fRunTime, fEarthHalfRevTime * 2) / fEarthHalfRevTime;
+	glm::quat eRevolution = glm::mix(eRevFirst, eRevSecond, earthRevPercentage);
+
+	earthPos *= glm::mat4_cast(eRevolution);
+
+
+
+
+
+	m_pMeshMngr->SetModelMatrix(glm::scale(IDENTITY_M4, vector3(5.936f, 5.936f, 5.936f)), "Sun");
+	m_pMeshMngr->SetModelMatrix(earthPos, "Earth");
+	m_pMeshMngr->SetModelMatrix(moonPos, "Moon");
 
 	//Adds all loaded instance to the render list
 	m_pMeshMngr->AddInstanceToRenderList("ALL");
 
-	static int nEarthOrbits = 0;
-	static int nEarthRevolutions = 0;
-	static int nMoonOrbits = 0;
+	int nEarthOrbits = fRunTime / (fEarthHalfOrbTime * 2);
+	int nEarthRevolutions = fRunTime / (fEarthHalfRevTime * 2);
+	int nMoonOrbits = fRunTime / (fMoonHalfOrbTime * 2);
 
 	//Indicate the FPS
 	int nFPS = m_pSystem->GetFPS();
