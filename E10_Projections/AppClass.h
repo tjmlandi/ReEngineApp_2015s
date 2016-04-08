@@ -13,12 +13,15 @@ using namespace ReEng; //Using ReEng namespace to use all the classes in the dll
 
 class AppClass : public ReEngAppClass
 {
+	PrimitiveClass* m_pCone = nullptr;
+	PrimitiveClass* m_pCylinder = nullptr;
+
+	matrix4 m_m4Projection;
+	matrix4 m_m4View;
+
+	float m_fTemp = 0.0f;
 public:
 	typedef ReEngAppClass super;
-
-	matrix4 m_mToWorld;
-
-	vector3 m_v3Orientation;
 
 	/* Constructor */
 	AppClass(HINSTANCE hInstance, LPWSTR lpCmdLine, int nCmdShow) : super(hInstance, lpCmdLine, nCmdShow) {}
@@ -53,12 +56,6 @@ public:
 	Manage the response of key presses
 	*/
 	virtual void ProcessKeyboard(void);
-
-	/*
-	ProcessMouse
-	Manage the response of key presses and mouse position
-	*/
-	virtual void ProcessMouse(void);
 
 	/*
 	Release
